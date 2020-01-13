@@ -14,7 +14,17 @@ require_once('Post.php');
 require_once('Comment.php');
 require_once('Inserter.php');
 require_once('Attachments.php');
-//include('View.html');
+require_once('View.php');
+/* add_action('admin_menu', 'admin_menu_setup');
+   function admin_menu_setup() {
+
+    add_menu_page( 'Project Log', 'Log Plugin', 'manage_options', 'Project-Log', 'custom' );
+  }
+
+function custom() {
+	echo "HELLO";
+  }
+*/
 
 $db = new DataBase;
 $inserter = new Inserter($db);
@@ -22,3 +32,4 @@ $user = new User($db,$inserter);
 $post = new Post($db,$inserter);
 $comment = new Comment($db,$inserter);
 $attachment = new Attachments($db,$inserter);
+$view = new View();
