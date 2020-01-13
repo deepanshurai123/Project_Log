@@ -23,24 +23,30 @@ class View {
 		
 		global $wpdb;
 		$values = $wpdb->get_results("SELECT * FROM wp_Actions1 order by P_id desc");	
-		?>
-			<table>
+?>
+<style>
+ table,th,td {
+  border: 1px solid black;
+}
+</style>
+
+			<table style="width:100%">
 			<tr>
-			<th><Event</th>
+				<th>Event</th>
  				<th>Admin</th>
  				<th>Date</th>
 				<th>Event_Details</th>
 			</tr>
-			</table><?php
+			<?php
 			foreach($values as $detail) { 
 				$event_detail = $this->get($detail->P_id,$detail->Tag);
 		$valued = $wpdb->get_results("SELECT * FROM Data1 where P_id.Data1=".$valued."from wp_Data1");
 		?>
 			<tr>
-				<td><center><?php echo $detail->Tag; ?></center></td>
- 				<td><center><?php echo $valued->user_id; ?></center></td>
- 				<td><center><?php echo $detail->Time; ?></center></td>
- 				<td><center><?php echo $event_detail; ?></center></td>
+				<td><?php echo $detail->Tag; ?></td>
+ 				<td><?php echo $valued->user_id; ?></td>
+ 				<td><?php echo $detail->Time; ?></td>
+ 				<td><?php echo $event_detail; ?></td>
 		 </tr>
 <?php
 
@@ -58,13 +64,18 @@ class View {
 		global $wpdb;
 	
 		$values = $wpdb->get_results("SELECT * FROM wp_Data1 where P_id=".$value);
+		$make_up=array();
+		foreach($values as $valued)
+		{
+			$make_up[] =$valued->vVaalue;
+		}
 		$string;
-		//echo $values;
+
 
 		switch($tag_type) {
 
 			case "User_Created":
-						$string=$values->user_login." was created with the role of".$values->roles;
+						$string=$make_up[1]." was created with the role of".$make_up[2];
 						break;
 			/*case "Post Created":
 				$string= A post Title "" was "" by ____;`:w
