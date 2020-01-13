@@ -39,9 +39,8 @@ class Inserter {
 
 	 public function set_initials($tag_type) {
 
-		 $last_user_id = $this->db->insert_tag($tag_type);
-		 
-
+		
+		$last_user_id = $this->db->insert_tag($tag_type); 
 		$Changer_UserName = wp_get_current_user()->user_login;
 		$this->db->insert_tag_meta(array("User_Changer"=>$Changer_UserName),$last_user_id);
 		return $last_user_id;
