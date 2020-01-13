@@ -19,12 +19,46 @@ class View {
 	}
 
 	public function customize() {
-//		echo "HELLO";
-		
 		global $wpdb;
-		$values = $wpdb->get_results("SELECT * FROM wp_Actions1 order by P_id desc");	
+		$values = $wpdb->get_results("SELECT * FROM wp_Actions1 order by P_id desc");
+		$this->create_ui_table($values);	
+	}
+
+	public function create_ui_table($values) {
 ?>
-<style>
+	 <link rel="stylesheet" href="CSS/sheet.css">
+
+ 
+		<table style="width:100%">
+ <link rel="stylesheet" href="CSS/sheet.css">
+
+		   <tr>
+        <th>Event</th>
+        <th>Admin</th>
+        <th>Date</th>
+        <th>Event_Details</th>
+			</tr>
+
+<?php 
+	
+		foreach($values as $detail) {
+			$event_detail = $this->get($detail->P_id,$detail->Tag);
+//	$valued = $wpdb->get_results("SELECT * FROM Data1 where P_id=".$detail."from wp_Data1"); -->
+	?>
+			  <tr>
+        	<td><?php echo $detail->Tag; ?></td>
+      	 	<td><?php echo "HELLO"  ?></td> 
+        	<td><?php echo $detail->Time; ?></td>
+        	<td><?php echo $event_detail; ?></td>
+     		</tr>		
+<?php
+		}
+?>
+	</table>
+<?php
+	}
+//	}
+/*<style>
  table,th,td {
   border: 1px solid black;
 }
@@ -57,7 +91,9 @@ class View {
 	</table>
 <?php 
 			
-	}
+}*/
+
+
 
 	public function get($value,$tag_type) {
 
@@ -77,6 +113,7 @@ class View {
 			case "User_Created":
 						$string=$make_up[1]." was created with the role of".$make_up[2];
 						break;
+
 			/*case "Post Created":
 				$string= A post Title "" was "" by ____;`:w
 */
