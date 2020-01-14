@@ -39,7 +39,7 @@ class Post {
 			
 			if($this->old_post_data->post_status=='auto-draft' && $new_post_data->post_status=='publish')	{
 				$this->inserter->created(array("post_title",
-																				"post_status"),
+																				"post_status","post_author"),
 																"Post_Created",
 																array("post",
 																			$post_id)
@@ -56,7 +56,6 @@ class Post {
 
 }
 		
-
 
 
 

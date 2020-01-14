@@ -26,12 +26,8 @@ class View {
 
 	public function create_ui_table($values) {
 ?>
-	 <link rel="stylesheet" href="CSS/sheet.css">
-
- 
+	
 		<table style="width:100%">
- <link rel="stylesheet" href="CSS/sheet.css">
-
 		   <tr>
         <th>Event</th>
         <th>Admin</th>
@@ -51,49 +47,12 @@ class View {
         	<td><?php echo $detail->Time; ?></td>
         	<td><?php echo $event_detail; ?></td>
      		</tr>		
-<?php
+	<?php
 		}
-?>
-	</table>
-<?php
+	?>
+		</table>
+	<?php
 	}
-//	}
-/*<style>
- table,th,td {
-  border: 1px solid black;
-}
-</style>
-
-			<table style="width:100%">
-			<tr>
-				<th>Event</th>
- 				<th>Admin</th>
- 				<th>Date</th>
-				<th>Event_Details</th>
-			</tr>
-			<?php
-			foreach($values as $detail) { 
-				$event_detail = $this->get($detail->P_id,$detail->Tag);
-		$valued = $wpdb->get_results("SELECT * FROM Data1 where P_id.Data1=".$valued."from wp_Data1");
-		?>
-			<tr>
-				<td><?php echo $detail->Tag; ?></td>
- 				<td><?php echo $valued->user_id; ?></td>
- 				<td><?php echo $detail->Time; ?></td>
- 				<td><?php echo $event_detail; ?></td>
-		 </tr>
-<?php
-
-			 
-
-			}?>
-
-	</table>
-<?php 
-			
-}*/
-
-
 
 	public function get($value,$tag_type) {
 
@@ -113,6 +72,13 @@ class View {
 			case "User_Created":
 						$string=$make_up[1]." was created with the role of".$make_up[2];
 						break;
+			case "Post_Created":
+					$string="A post Title ".$make_up[1]." was ".$make_up[2]." by ".$make_up[3];
+					break;
+			case "Modified__post_title":
+					 $string="The Title of the Post by ".$make_up[1]." was ".$make_up[2]." by ".$make_up[3];
+           break;
+
 
 			/*case "Post Created":
 				$string= A post Title "" was "" by ____;`:w
