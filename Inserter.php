@@ -71,7 +71,7 @@ class Inserter {
 
 
 				
-				 if($check=="pass" or  $check=="post_content")
+				 if($checker=="pass" or  $checker=="post_content")
 					 continue;
 				 $this->db->insert_tag_meta(array("From"=>$old_value,"To"=>$new_value),$last_user_id);
 			}
