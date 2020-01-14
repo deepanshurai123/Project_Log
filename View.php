@@ -86,21 +86,6 @@ class View {
 			case "trash" :
            		$string="The Comment on the Post titled ".$make_up[2]." by ".$make_up[1]." was marked as ".$tag_type;
 					 		break;
-			/*case "approved":
-           $string="The Comment on the Post titled ".$make_up[2]." by ".$make_up[1]." was Approved ";
-					 break;
-			case "unapproved":
-            $string="The Comment on the Post titled ".$make_up[2]." by ".$make_up[1]." was  unapproved ";
-						break;
-			case "Un_Spammed":
-						$string="The Comment on the Post titled ".$make_up[2]." by ".$make_up[1]." was  Unspammed ";            
-						break;
-			case "Un_Trashed":
-						 $string="The Comment on the Post titled ".$make_up[2]." by ".$make_up[1]." was Unspammed ";
-						 break;
-			case "trash":
-             $string="The Comment on the Post titled ".$make_up[2]." by ".$make_up[1]." was Trashed ";
-             break;*/
 			case "Modified__post_content":
 					$string="The post Titled ".$make_up[1]." Content was Modified ";
 					break;
@@ -117,11 +102,9 @@ class View {
 					$string="The Password of the User ".$make_up[1]." was changed ";
 					break;
 
-			case "Comment_to_a_Post":
-					$string=$make_up[1]." Commented on a Post Titled ".$make_up[2];
-					break;
-			case "Comment_to_a_reply":
-          $string=$make_up[1]." Replied on a Comment on a Post Titled ".$make_up[2];
+			case "Commented on a Post":
+			case "Replied on a Comment":
+          $string=$make_up[1]." ".$tag_type." on a Post Titled ".$make_up[2];
 					break;
 		}
 		return $string;
