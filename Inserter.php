@@ -30,7 +30,9 @@ class Inserter {
 		 $user_info = call_user_func($function,$decider_array[1]);
 		 $setup_array=array();
 		 foreach($details_array as $detail) {
-      $value=is_array($user_info->$detail)?implode(' ',$user_info->$detail):$user_info->$detail;
+			 $value=is_array($user_info->$detail)?implode(' ',$user_info->$detail):$user_info->$detail;
+			 if($detail=="post_author")
+				 $value = get_userdata($value)->user_login;
       $setup_array += [$detail=>$value];
 		 
 		 }
@@ -58,10 +60,15 @@ class Inserter {
 			{
 
 				$last_user_id = $this->set_initials("Modified_".$tag_type."_".$checker);
-				if($check!="post_title") {
+				if($checker!="post_title") {
 					
 					$this->db->insert_tag_meta(array("Target".$tag_type=>$victim),$last_user_id);
 				}
+				if($checker=="post_title") {
+					 $this->db->insert_tag_meta(array("Target"."post_id"=>$new_details->ID),$last_user_id);
+
+				}
+
 
 				
 				 if($check=="pass" or  $check=="post_content")
