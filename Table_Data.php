@@ -8,23 +8,20 @@ class Table_Data {
 		$this->inserter=$inserter;
 	}
 
-
-	public function get_entries() {
-		
+	public function get_entries() {		
 		global $wpdb;
 		$values = $wpdb->get_results("SELECT * FROM wp_Actions1 order by P_id desc");
 		return $values;
 	}
 
-	public function get_display_message($value,$tag_type) {
-		
+	public function get_display_message($value,$tag_type,&$admin) {
 		global $wpdb;
     $values = $wpdb->get_results("SELECT * FROM wp_Data1 where P_id=".$value);
-    $make_up=array();
+		$make_up=array();
     foreach($values as $valued) {
       $make_up[] =$valued->vVaalue;
     }
-    
+    $admin = $make_up[0];
 		$string;
 		switch($tag_type) {
       case "User Created":
@@ -36,13 +33,13 @@ class Table_Data {
       case "post_title":
               $string="The Title of the Post id ".$make_up[1]." was changed from ".$make_up[2]." to ".$make_up[3];
               break;
-      case "spam":
-      case "approved":
-      case "unapproved":
-      case "Comment UnSpammed":
-      case "Comment UnTrashed" :
-			case "trash" :
-			        $string="The Comment on the Post titled ".$make_up[2]." by ".$make_up[1]." was marked as ".$tag_type;
+      case "Comment spam":
+      case "Comment approved":
+      case "Comment unapproved":
+      case "Comment Unspammed":
+      case "Comment Untrashed" :
+			case "Comment trash" :
+			        $string="The Comment on the Post titled ".$make_up[2]." by ".$make_up[1]." was marked as ".strstr($tag_type," ");
               break;
       case "post_content":
           $string="The post Titled ".$make_up[1]." Content was Modified ";
@@ -63,7 +60,13 @@ class Table_Data {
       case "Commented on a Post":
       case "Replied on a Comment":
           $string=$make_up[1]." ".$tag_type." on a Post Titled ".$make_up[2];
-          break;
+					break;
+			case "Attachment Added":
+				$string= " The File Named ".$make_up[1]." was added to the path ".$make_up[2];
+					break;
+			case "Attachment Deleted":
+				$string= " The File Named ".$make_up[1]." was deleted from the path ".$make_up[2];
+					break;
     }
     return $string;
   }

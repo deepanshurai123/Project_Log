@@ -19,10 +19,10 @@ require_once('View.php');
 
 $db = new DataBase;
 $inserter = new Inserter($db);
-$user = new User($db,$inserter);
-$post = new Post($db,$inserter);
-$comment = new Comment($db,$inserter);
-$attachment = new Attachments($db,$inserter);
+$user = new User($inserter);
+$post = new Post($inserter);
+$comment = new Comment($inserter);
+$attachment = new Attachments($inserter);
 $Tabledata = new Table_Data($inserter);
-$view = new View($Tabledata,$inserter);
-add_action('admin_menu',array($view,admin_menu_setup));
+$view = new View($Tabledata, $inserter);
+add_action('admin_menu',array($view, admin_menu_setup));

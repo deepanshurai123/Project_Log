@@ -16,10 +16,7 @@ class User {
 	public $db;
 	public $inserter;
 
-
-	function __construct(Database $db,Inserter $inserter) {
-
-		$this->db=$db;
+	function __construct( $inserter) {
 		$this->inserter=$inserter;
 		$this->activate_user_hooks();
 		$this->set_up_tags();
@@ -33,8 +30,8 @@ class User {
 
 	public function activate_user_hooks() {
 
-		/*1.User Created -*/ add_action('user_register',array($this,'user_created'));
-		/*2.User Meta Details -*/  add_action('profile_update',array($this,'user_modified'),10,2);
+		/*1.User Created -*/ add_action('user_register', array($this, 'user_created'));
+		/*2.User Meta Details -*/  add_action('profile_update', array($this, 'user_modified'), 10, 2);
 	}
 
 	/*
@@ -45,38 +42,28 @@ class User {
 	 */
 
 	public function user_created($user_id) {
-
-	
 		$this->inserter->created(array("user_login",
-																	"roles"),
+																	 "roles"
+																 ),
 														"User Created",
 														array("userdata",
-																	$user_id)
+														      $user_id
+													       )
 														);
 	}
 
-	public function user_modified_array()
-	{
-
+	public function user_modified_array() {
 		$keys= array("user_pass","user_email","user_firstname","user_lastname","display_name","roles");
 		return $keys;
 	}
 
 	public function set_up_tags() {
-		
 		$key = $this->user_modified_array();
 		$this->inserter->setup_tags($key);
 	}
 
-	
-	public function user_modified($user_id,$user_old_data) {
-
+	public function user_modified($user_id, $user_old_data) {
 		$key = $this->user_modified_array();
-		$this->inserter->modification_check($user_old_data,get_userdata($user_id),$key,"User",$user_old_data->user_login);
-
-
+		$this->inserter->modification_check($user_old_data, get_userdata($user_id), $key, "User", $user_old_data->user_login);
 	}
-
-
-
 }
