@@ -4,17 +4,30 @@
 class Inserter {
 
 
-	 public $db;
+	public $db;
+	public $tag_map=array();
+	
 
-
-	 public function __construct(Database $db) {
-
+	public function __construct(Database $db) {
                 $this->db=$db;
+	}
+		
 
-        }
+	public function setup_tags($array) {
 
-	 public function created($details_array,$tag_type,$decider_array)
-	{
+		foreach($array as $token) {
+			$str = str_replace("_"," ",$token);
+			$str = ucwords($str)." Modified ";	
+			$this->tag_map += [$token=> $str];
+			
+		}
+	
+		
+
+	}	
+
+
+	 public function created($details_array,$tag_type,$decider_array) {
 		$details_array = is_array($decider_array)? $this->make_array($details_array,$decider_array) :$details_array;
 		$last_user_id = $this->set_initials($tag_type);
 		
@@ -59,7 +72,7 @@ class Inserter {
 			if($old_value!=$new_value)
 			{
 
-				$last_user_id = $this->set_initials("Modified_".$tag_type."_".$checker);
+				$last_user_id = $this->set_initials($checker);
 				if($checker!="post_title") {
 					
 					$this->db->insert_tag_meta(array("Target".$tag_type=>$victim),$last_user_id);

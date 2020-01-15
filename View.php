@@ -3,9 +3,11 @@ class View {
 	
 	public $details;
 	public $Tabledata;
+	public $inserter;
 
-	function __construct($Tabledata){
+	function __construct($Tabledata,$inserter){
 		$this->Tabledata = $Tabledata;
+		$this->inserter= $inserter;
 	}
 
 	public function add_view_hooks(){

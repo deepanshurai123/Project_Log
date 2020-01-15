@@ -22,6 +22,7 @@ class User {
 		$this->db=$db;
 		$this->inserter=$inserter;
 		$this->activate_user_hooks();
+		$this->set_up_tags();
 	}
 
 	/*
@@ -44,9 +45,11 @@ class User {
 	 */
 
 	public function user_created($user_id) {
+
+	
 		$this->inserter->created(array("user_login",
 																	"roles"),
-														"User_Created",
+														"User Created",
 														array("userdata",
 																	$user_id)
 														);
@@ -54,9 +57,17 @@ class User {
 
 	public function user_modified_array()
 	{
+
 		$keys= array("user_pass","user_email","user_firstname","user_lastname","display_name","roles");
 		return $keys;
 	}
+
+	public function set_up_tags() {
+		
+		$key = $this->user_modified_array();
+		$this->inserter->setup_tags($key);
+	}
+
 	
 	public function user_modified($user_id,$user_old_data) {
 
