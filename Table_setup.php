@@ -1,6 +1,14 @@
 <?php
-		$value = $this->Tabledata->get_entries(); ?>
-		<table style="width:100%">
+$value = $this->Tabledata->get_entries(); 
+require_once('Table.css');
+require_once('Header.css'); ?>
+	 <div class="header">
+   <a href="#default" class="logo">Project Log</a>
+   <div class="header-right">
+    <a class="active" href="#home">Home</a>
+  </div>
+</div> 
+	<table style="width:100%">
        <tr>
         <th>Event</th>
         <th>Admin</th>
@@ -16,7 +24,7 @@
           	<td><?php echo $detail->Time; ?></td>
           	<td><?php echo $event_detail; ?></td>
         	</tr> 
-		<?php } ?>
+<?php } ?>
 	</table>
  
 
