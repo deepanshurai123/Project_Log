@@ -3,11 +3,11 @@ td, th {
     border: 1px solid black;
     padding: 15px;
   }
-  tr:hover { background-color: #C4C44C; }
   tr:nth-child(even) {background-color: #E7E7B7;}
   th {
   background-color: #4CAF50;
   color: white;
+}
 .header {
   overflow: hidden;
   background-color: #f1f1f1;
@@ -28,6 +28,8 @@ td, th {
 
 /* Style the logo link (notice that we set the same value of line-height and font-size to prevent the header to increase when the font gets bigger */
 .header a.logo {
+
+   text-align: center;
   font-size: 25px;
   font-weight: bold;
 }

@@ -83,7 +83,7 @@ class Database {
 
 	public function insert_tag($tag_type) {	
 		global $wpdb;
-		$wpdb->insert('wp_Actions1',array('P_id' => '','Time' => date("Y/m/d"), 'Tag' => $tag_type ));
+		$wpdb->insert('wp_Actions1',array('P_id' => '','Time' => date('Y-m-d H:i:s'), 'Tag' => $tag_type ));
 		$lastid = $wpdb->insert_id;
 		return $lastid;
 	}
