@@ -19,23 +19,22 @@ class Inserter {
 		}
 	}	
 	
-	public function created($details_array, $tag_type, $decider_array) {
-		$details_array = is_array($decider_array) ? $this->make_array($details_array, $decider_array) : $details_array;
+	public function created($details_array, $tag_type, $decider) {
+		$details_array = !(is_null($decider)) ? $this->make_array($details_array, $decider) : $details_array;
 		$last_user_id = $this->set_initials($tag_type);
 		foreach($details_array as $key => $value) {
 			$this->db->insert_tag_meta(array($key => $value), $last_user_id);
 		}
+		
 	}
 	
-	public function make_array($details_array, $decider_array) {
-		 $function = "get_".$decider_array[0];
-		 $user_info = call_user_func($function, $decider_array[1]);
-		 $setup_array=array();
-		 foreach($details_array as $detail) {
+	public function make_array($details_array, $user_info) {
+		$setup_array=array();
+		foreach($details_array as $detail) {
 			 $value=is_array($user_info->$detail) ? implode(' ', $user_info->$detail) : $user_info->$detail;
 			 if($detail == "post_author")
 				 $value = get_userdata($value)->user_login;
-      $setup_array += [$detail=>$value];
+       $setup_array += [$detail=>$value];
 		 }
 		 return $setup_array;
 	}
