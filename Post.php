@@ -22,10 +22,11 @@ class Post {
 	public function activate_post_hooks() {
 		add_action('save_post', array($this, 'post_inserted'), 10, 3);
 		add_action('pre_post_update', array($this, 'save_post_data'), 10, 2);
+		add_action('delete_post', array($this, 'deleted_post'));
 	}
 	
 	public function post_modified_array() {
-    $keys= array("post_title", "post_status", "post_author","post_content");
+    $keys= array("post_title", "post_author","post_content");
     return $keys;
   }
 
@@ -47,20 +48,30 @@ class Post {
 																			  "post_author" 
 																		                  ),
 																"Post Created",
-																 array( "post",
-																			  $post_id )
+																 $new_post_data
 																);
 			}
 			else {
-				$key = array("post_author", "post_title", "post_content", "post_status");
+				$key = array("post_author", "post_title", "post_content");
 				$this->inserter->modification_check($this->old_post_data, get_post($post_id), $key, "", $new_post_data->post_title);
 			}
 		}
 	}
+
+	public function deleted_post($post_id) {
+		$post_data=get_post($post_id);
+		if($post_data->post_status!='trash')
+			return;
+		$this->inserter->created(array( "post_title",
+																		"post_author"
+																	),
+														"Post Deleted",
+														$post_data
+																);
 }
 		
 
 
 
 
-
+}
