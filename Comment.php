@@ -15,12 +15,12 @@ class Comment {
 	}
 
 	public function comment_register($comment_id, $comment_approved, $comment_data) {
-		$tag = $comment_data['comment_parent'] ? "Replied on a Comment" : "Commented on a Post";	
+		$tag = $comment_data[comment_parent] ? "Replied on a Comment" : "Commented on a Post";	
 		$post_t= $this->get_post_title($comment_data['comment_post_ID']);
 		$this->inserter->created(array( "Comment_Author" => $comment_data['comment_author'],
 																				"Post_Title" => $post_t),
 														$tag,
-														"");
+														NULL);
 	}
 
 	public function comment_transition_detector($new_status, $old_status, $comment) {

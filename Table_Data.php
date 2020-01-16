@@ -66,7 +66,12 @@ class Table_Data {
 					break;
 			case "Attachment Deleted":
 				$string= " The File Named "."<b>".$make_up[1]."</b>"." was deleted from the path "."<b>".$make_up[2]."</b>";
-					break;
+				break;
+			case "Post Deleted":
+        $string= " The Post Titled "."<b>".$make_up[1]."</b>"." by "."<b>".$make_up[2]."</b>"." was Deleted ";
+          break;
+
+
     }
     return $string;
   }

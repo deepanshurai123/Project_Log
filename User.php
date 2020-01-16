@@ -42,13 +42,12 @@ class User {
 	 */
 
 	public function user_created($user_id) {
+		$user_data= get_userdata($user_id);
 		$this->inserter->created(array("user_login",
 																	 "roles"
 																 ),
 														"User Created",
-														array("userdata",
-														      $user_id
-													       )
+														$user_data
 														);
 	}
 
