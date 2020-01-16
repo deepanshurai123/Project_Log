@@ -16,12 +16,12 @@ class Attachments{
 
 	public function attachment_adder($attachment_id) {
     $details_array= $this->get_required_detail($attachment_id);
-    $this->inserter->created($details_array, "Attachment Added", "");
+    $this->inserter->created($details_array, "Attachment Added", NULL);
   }
 	
 	public function attachment_deletor($attachment_id) {
     $details_array= $this->get_required_detail($attachment_id);
-    $this->inserter->created($details_array, "Attachment Deleted", "");
+    $this->inserter->created($details_array, "Attachment Deleted", NULL);
   }
 
   public function get_required_detail($attachment_id) {
@@ -32,7 +32,6 @@ class Attachments{
     return $detail_array;
     }
 }
-
 
 
 
