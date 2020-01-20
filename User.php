@@ -32,6 +32,7 @@ class User {
 
 		/*1.User Created -*/ add_action('user_register', array($this, 'user_created'));
 		/*2.User Meta Details -*/  add_action('profile_update', array($this, 'user_modified'), 10, 2);
+															add_action('delete_user',array($this , 'user_deleted'));
 	}
 
 	/*
@@ -40,6 +41,15 @@ class User {
 	 * Users that
 	 * are being Created
 	 */
+
+	public function user_deleted($user_id) {
+		$user_data= get_userdata($user_id);
+		$this->inserter->created(array("user_login"
+                                  ),
+                            "User Deleted",
+                            $user_data
+                            );
+	}		
 
 	public function user_created($user_id) {
 		$user_data= get_userdata($user_id);

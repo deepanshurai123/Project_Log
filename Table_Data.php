@@ -70,6 +70,15 @@ class Table_Data {
 			case "Post Deleted":
         $string= " The Post Titled "."<b>".$make_up[1]."</b>"." by "."<b>".$make_up[2]."</b>"." was Deleted ";
           break;
+			case "User Deleted":
+        $string= "<b>".$make_up[1]."</b>"." was deleted from the Database ";
+          break;
+			case "Post Trashed":
+        $string= " The Post Titled "."<b>".$make_up[1]."</b>"." by "."<b>".$make_up[2]."</b>"." was Trashed ";
+				break;
+			case "Post Untrashed":
+        $string= " The Post Titled "."<b>".$make_up[1]."</b>"." by "."<b>".$make_up[2]."</b>"." was Untrashed ";
+          break;
 
 
     }
