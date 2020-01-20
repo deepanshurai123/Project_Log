@@ -34,15 +34,12 @@ class Post {
 
 	public function terms_changed( $post_id, $terms, $tt_ids, $taxonomy ) {
 	
-		$post = get_post( $post_id );
+		$post = get_post( $post_id );	
 		if('auto-draft'== $post->post_status)
 			return;
-		
-		if ( 'post_tag' == $taxonomy ) {
-		
+		if ('post_tag' == $taxonomy ) {
 			$this->check_tags_change( $this->get_post_tags( $post ), $post );
 		} else {
-		
       $this->check_categories_change( $this->old_cats, $this->get_post_categories( $post ), $post );
     }
 	}
@@ -50,7 +47,8 @@ class Post {
 	public function check_categories_change($old_cats,$new_cats,$post) {
 		$old_cats = implode( ', ', (array) $old_cats );
 		$new_cats = implode( ', ', (array) $new_cats );
-
+		$old_cats = empty($old_cats) ? "NO CATEGORY" : $old_cats; 
+		$new_cats = empty($new_cats) ? "NO CATEGORY" : $new_cats;
 		if($old_cats != $new_cats) {
 			    $this->inserter->created( array(
                                      "post_title" => $post->post_title ,
@@ -66,8 +64,6 @@ class Post {
 		$added_tags = array_diff(  $new_tag,  $this->old_tags );
 		$removed_tags = array_diff(  $this->old_tags,  $new_tag );
 		
-
-
     $old_tags     = implode( ', ', (array) $this->old_tags );
     $new_tags     = implode( ', ', (array) $new_tags );
     $added_tags   = implode( ', ', $added_tags );
@@ -88,9 +84,7 @@ class Post {
                             "Tags Removed",
                            NULL);
 		}
-
 	}
-
 
 	public function trashed_post($post_id) {
 		$post_data=get_post($post_id);
@@ -115,6 +109,7 @@ class Post {
                             $post_data
 												);
   }
+	
 	public function post_modified_array() {
 		$keys= array(
 									"post_title", 
@@ -137,8 +132,6 @@ class Post {
 
 	public function post_inserted($post_id, $post, $update) {
 		$new_post_data = get_post($post_id);
-		//$this->_new_cat  = $this->get_post_categories($user_id );
-		//$this->new_tags = $this->get_post_tags($new_post_data);
 		if($update)	{
 			if($this->old_post_data->post_status == 'auto-draft' && $new_post_data->post_status == 'publish')	{
 				$this->inserter->created(array( 
@@ -149,9 +142,8 @@ class Post {
 																"Post Created",
 																$new_post_data
 														);
-			}
-			else {
-				$key = array(
+			} else {
+					$key = array(
 											"post_author", 
 											"post_title", 
 											"post_content"
@@ -181,7 +173,5 @@ class Post {
 	public function get_post_categories( $post ) {
     return ! isset( $post->ID ) ? array() : wp_get_post_categories( $post->ID, array( 'fields' => 'names' ) );
   }
-
-
 		
 }

@@ -25,12 +25,13 @@ class Comment {
 
 	public function comment_transition_detector($new_status, $old_status, $comment) {
 		$new_status = $old_status == "spam" ? "Unspammed" : $new_status;
+		if($new_status!='delete')
 		$new_status = $old_status == "trash"? "Untrashed" : $new_status;
 		$post_t= $this->get_post_title($comment->comment_post_ID);
 		$this->inserter->created( array( "Comment_Author" => $comment->comment_author,
 																		 "Post_Title" => $post_t),	
 														"Comment ".$new_status,
-														"");
+														NULL);
 	}
 
 	public function get_post_title($post_id){

@@ -39,6 +39,7 @@ class Table_Data {
       case "Comment Unspammed":
       case "Comment Untrashed" :
 			case "Comment trash" :
+			case "Comment delete" :
 			    $string="The Comment on the Post titled "."<b>".$make_up[2]."</b>"." by ".$make_up[1]." was marked as "."<b>".strstr($tag_type," ")."</b>";
               break;
       case "post_content":
