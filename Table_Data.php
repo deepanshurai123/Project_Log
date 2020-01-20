@@ -78,7 +78,22 @@ class Table_Data {
 				break;
 			case "Post Untrashed":
         $string= " The Post Titled "."<b>".$make_up[1]."</b>"." by "."<b>".$make_up[2]."</b>"." was Untrashed ";
-          break;
+				break;
+			case "Category Changed":
+				$string="The Category of the Post Titled "."<b>".$make_up[1]."</b>"." was changed from "."<b>".$make_up[2]."</b>"." to "."<b>".$make_up[3]."</                b>";
+         break;
+			case "Tags Added":
+				$string="Added Tags "."<b>".$make_up[2]."</b>"." to the Post Titled "."<b>".$make_up[1]."</b>";
+				break;
+			case "Tags Removed":
+        $string="Deleted Tags "."<b>".$make_up[2]."</b>"." of the Post Titled "."<b>".$make_up[1]."</b>";
+        break;
+
+
+		
+
+        
+
 
 
     }
@@ -87,4 +102,4 @@ class Table_Data {
 
 }
 
-		
+	
