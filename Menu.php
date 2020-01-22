@@ -14,8 +14,20 @@ class Menus {
 
 	 public function activate_menu_hooks() {
 		 add_action( 'wp_create_nav_menu', array( $this, 'menu_created' ), 10, 2 );
-		add_action( 'wp_update_nav_menu', array( $this, 'updated_menu' ), 10, 2 );
-		add_action( 'admin_init', array( $this, 'admin_setting' ) );
+//		add_action( 'wp_update_nav_menu', array( $this, 'updated_menu' ), 10, 2 );
+		 add_action( 'admin_init', array( $this, 'admin_setting' ) );
+		  add_action( 'wp_update_nav_menu_item', array( $this, 'UpdateeMenuItem' ), 10, 3 );
+	 }
+
+	 public function UpdateeMenuItem( $menu_id, $menu_item_db_id, $args ) {
+		 //die($menu_item_db_id);
+	
+		 if(! isset($this->old_menu_item[$menu_item_db_id][$menu_id]))
+		 {
+			 //$this->old_menu_item += [$menu_id => array( $menu_item_db_id => 1 )];
+		//	 die("NEW VALUE");
+		 }
+
 	 }
 
 	 public function admin_setting() {
@@ -28,19 +40,51 @@ class Menus {
 			
 			$is_nav_menu = basename( $script_name ) == 'nav-menus.php';
 			if($is_nav_menu) {
-				$menuss= wp_get_nav_menus() ;
-				foreach($menuss as $menuu)
+				$menus= wp_get_nav_menus() ;
+				foreach($menus as $menu)
 				{
 					$this->old_menu+= [ $menu->term_id => array( 'name' => $menu->name) ];
 					$menu_ids=wp_get_nav_menu_items( $menu->term_id );
 					$item_id=array();
+					$idd=$menu->term_id;
+			//		echo($menu->term_id );
 					foreach($menu_ids as $menu_id) {
-						$this->old_menu_item += [$menu->term_id => array( $menu_id->ID => 1 )];
+						$this->old_menu_item += [$menu_id->ID => array( $idd => 1 )];
+				//		$item_id += [$menu_id->ID];
+			//		  $key = $menu_id->ID ;
+		//				$value = 1;
+	//					$this->old_menu_item +=[ $idd      ,array($key => $value )];
+				
+					//	array_push($this->old_menu[idd],array( $menu_id->ID => 1));
+//					$st =array( $menu_id->ID => 1 );
+	//					 $this->old_menu_item[idd]= $st;
+		//				$this->old_menu_item = [$idd => array( $menu_id->ID => "asdasd" )];
+//						  $this->old_menu_item[idd] = array( $menu_id->ID => 1);
+
+						     //  $item_id += [$menu_id->ID => 1];
+  //        echo(" ");              
+		//				echo( $menu_id->ID);
+				//		echo(" <br>");
+					
+//		 die($this->old_menu_item[$menu->term_id][$menu_id->ID]);
+				
+					//	$item_id += [$menu_id->ID];			
 					}
 
+					
+		//			this->old_menu_item += [ $idd => $item_id    ];
+				//echo(" <br>");
 
+				//	$this->old_menu_item +=  ['item_id' => $item_id ];
 //					$this->old_menu_item += wp_get_nav_menu_items( $menu->term_id );
 				}
+
+			//	echo ($this->old_menu_item[332][36]);
+	//			echo ($this->old_meu_item[34][219]);
+
+
+
+//i//die();
 	//			die(count($this->old_menu_item));
 
 			/*	 foreach($menu as $k) {
@@ -51,10 +95,13 @@ class Menus {
       }
       die();
 
-			*/					
+			*/	//				die($this->old_menu_item[$menu_id][$menu_item_db_id]); 
+
 						
 
 			}
+
+//			die($this->old_menu_item[$menu_id][$menu_item_db_id]); 
 	
 
 
@@ -69,7 +116,8 @@ class Menus {
 	 }
 
 	 public function updated_menu($menu_id,$menu_data) {
-		 $post_array = filter_input_array( INPUT_POST );
+	//	 $post_array = filter_input_array( INPUT_POST );
+//		 if($this->old_menu_item
 		// if($this->old_menu[$menu_id]['name']!= $post_array['menu-name'])
 	//		 die("HE");
 		 /*foreach($this->old_post as $menu_obj) {
