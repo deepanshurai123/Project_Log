@@ -30,6 +30,38 @@ class Post {
 		add_action('wp_trash_post', array($this, 'trashed_post'));
 		add_action('untrash_post', array($this, 'untrashed_post'));
 		add_action('set_object_terms', array( $this, 'terms_changed' ), 10, 4 );
+		add_action( 'admin_action_edit', array( $this, 'post_edit_detector' ), 10 );
+		add_action( 'wp_head', array( $this, 'view' ), 10 );
+
+	}
+	
+	public function view() {
+		$post = get_queried_object();
+		$post_data = get_post($post_id);
+    $this->inserter->created(array(
+                                    "post_title",
+                                    "post_status",
+                                    "post_author"
+                                ),
+                                "Post Viewed",
+                                $post_data
+                          );
+
+	}
+
+
+	public function post_edit_detector() {
+
+		$post_id = isset( $_GET['post'] ) ? (int) sanitize_text_field( wp_unslash( $_GET['post'] ) ) : false;
+		$post_data = get_post($post_id);
+		$this->inserter->created(array(
+                                        "post_title",
+                                        "post_status",
+                                        "post_author"
+                                    ),
+                                "Post Opened",
+                                $post_data
+                            );	
 	}
 
 	public function terms_changed( $post_id, $terms, $tt_ids, $taxonomy ) {
@@ -51,9 +83,9 @@ class Post {
 		$new_cats = empty($new_cats) ? "NO CATEGORY" : $new_cats;
 		if($old_cats != $new_cats) {
 			    $this->inserter->created( array(
-                                     "post_title" => $post->post_title ,
-																		 "Old_Categories" => $old_cats , 
-																		 "New_Categories" => $new_cats
+                                     "post_title"      =>  $post->post_title ,
+																		 "Old_Categories"  =>  $old_cats , 
+																		 "New_Categories"  =>  $new_cats
 																	 ),
                             "Category Changed",
                             NULL);	
@@ -71,8 +103,8 @@ class Post {
 
 		if($this->old_tags!=$new_tags && !empty($added_tags)) {
 			$this->inserter->created( array(
-                                     "post_title" => $post->post_title,
-                                     "Tags" => $added_tags ),
+                                     "post_title" =>  $post->post_title,
+                                     "Tags"       =>  $added_tags ),
                             "Tags Added",
 														NULL);
 		}
@@ -80,7 +112,7 @@ class Post {
 		if($this->old_tags!=$new_tags && !empty($removed_tags)) {
 			 $this->inserter->created( array(
                                      "post_title" => $post->post_title,
-                                     "Tags" => $removed_tags ),
+                                     "Tags"       => $removed_tags ),
                             "Tags Removed",
                            NULL);
 		}
@@ -167,7 +199,10 @@ class Post {
 	}
 
 	public function get_post_tags($post) {
-	return ! isset( $post->ID ) ? array() : wp_get_post_tags( $post->ID, array( 'fields' => 'names' ) );
+		return ! isset( $post->ID ) ? array() : wp_get_post_tags( $post->ID, array( 
+																																									'fields' => 'names' 
+																																						) 
+																																					);
 	}
 
 	public function get_post_categories( $post ) {

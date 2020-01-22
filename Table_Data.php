@@ -88,14 +88,13 @@ class Table_Data {
 				break;
 			case "Tags Removed":
         $string="Deleted Tags "."<b>".$make_up[2]."</b>"." of the Post Titled "."<b>".$make_up[1]."</b>";
+				break;
+			case "Post Opened":
+				$string="Opened The Post Titled "."<b>".$make_up[1]."</b>";
+				break;
+		  case "Post Viewed":
+        $string="Viewed The Post Titled "."<b>".$make_up[1]."</b>";
         break;
-
-
-		
-
-        
-
-
 
     }
     return $string;
