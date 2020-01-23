@@ -14,19 +14,29 @@ class Menus {
 
 	 public function activate_menu_hooks() {
 		 add_action( 'wp_create_nav_menu', array( $this, 'menu_created' ), 10, 2 );
-//		add_action( 'wp_update_nav_menu', array( $this, 'updated_menu' ), 10, 2 );
+		 add_action( 'wp_update_nav_menu', array( $this, 'updated_menu' ), 10, 2 );
 		 add_action( 'admin_init', array( $this, 'admin_setting' ) );
-		  add_action( 'wp_update_nav_menu_item', array( $this, 'UpdateeMenuItem' ), 10, 3 );
+		 add_action( 'wp_update_nav_menu_item', array( $this, 'UpdateMenuItem' ), 10, 3 );
 	 }
 
-	 public function UpdateeMenuItem( $menu_id, $menu_item_db_id, $args ) {
-		 //die($menu_item_db_id);
-	
-		 if(! isset($this->old_menu_item[$menu_item_db_id][$menu_id]))
-		 {
-			 //$this->old_menu_item += [$menu_id => array( $menu_item_db_id => 1 )];
-		//	 die("NEW VALUE");
-		 }
+	 public function UpdateMenuItem( $menu_id, $menu_item_db_id, $args ) {
+		  $post_array = filter_input_array( INPUT_POST );
+			if ( isset( $post_array['menu-item-title'] ) && isset( $post_array['menu-name'] ) ) {
+		 			if( !isset($this->old_menu_item[$menu_item_db_id][$menu_id]  ) ) {
+			 			$this->old_menu_item += [$menu_item_db_id => array( $menu_id => 1 )];
+			 			$content_type = $post_array['menu-item-object'][ $menu_item_db_id ];
+			 			$content_name = $post_array['menu-item-title'][ $menu_item_db_id ];
+			 			$menu_name    = $post_array['menu-name'];
+			 
+			 			$this->inserter->created( array (
+                                            	'ContentType' => 'custom' === $content_type ? 'custom link' : $content_type ,
+                                            	'ContentName' => $content_name,
+																							'MenuName'    => $menu_name	
+                                      ),
+                                  "Menu Item Added", NULL
+                          );
+		 										}
+	  								}
 
 	 }
 
@@ -41,71 +51,15 @@ class Menus {
 			$is_nav_menu = basename( $script_name ) == 'nav-menus.php';
 			if($is_nav_menu) {
 				$menus= wp_get_nav_menus() ;
-				foreach($menus as $menu)
-				{
+				foreach($menus as $menu) {
 					$this->old_menu+= [ $menu->term_id => array( 'name' => $menu->name) ];
-					$menu_ids=wp_get_nav_menu_items( $menu->term_id );
-					$item_id=array();
-					$idd=$menu->term_id;
-			//		echo($menu->term_id );
-					foreach($menu_ids as $menu_id) {
-						$this->old_menu_item += [$menu_id->ID => array( $idd => 1 )];
-				//		$item_id += [$menu_id->ID];
-			//		  $key = $menu_id->ID ;
-		//				$value = 1;
-	//					$this->old_menu_item +=[ $idd      ,array($key => $value )];
-				
-					//	array_push($this->old_menu[idd],array( $menu_id->ID => 1));
-//					$st =array( $menu_id->ID => 1 );
-	//					 $this->old_menu_item[idd]= $st;
-		//				$this->old_menu_item = [$idd => array( $menu_id->ID => "asdasd" )];
-//						  $this->old_menu_item[idd] = array( $menu_id->ID => 1);
-
-						     //  $item_id += [$menu_id->ID => 1];
-  //        echo(" ");              
-		//				echo( $menu_id->ID);
-				//		echo(" <br>");
-					
-//		 die($this->old_menu_item[$menu->term_id][$menu_id->ID]);
-				
-					//	$item_id += [$menu_id->ID];			
+					$menu_items=wp_get_nav_menu_items( $menu->term_id );
+					$menu_id=$menu->term_id;
+					foreach($menu_items as $menu_item) {
+							$this->old_menu_item += [$menu_item->ID => array( $menu_id => 1 )];
 					}
-
-					
-		//			this->old_menu_item += [ $idd => $item_id    ];
-				//echo(" <br>");
-
-				//	$this->old_menu_item +=  ['item_id' => $item_id ];
-//					$this->old_menu_item += wp_get_nav_menu_items( $menu->term_id );
 				}
-
-			//	echo ($this->old_menu_item[332][36]);
-	//			echo ($this->old_meu_item[34][219]);
-
-
-
-//i//die();
-	//			die(count($this->old_menu_item));
-
-			/*	 foreach($menu as $k) {
-					 echo($k->term_id);
-					 echo(" ");
-					 echo($k->name);
-					 echo("<br>");
-      }
-      die();
-
-			*/	//				die($this->old_menu_item[$menu_id][$menu_item_db_id]); 
-
-						
-
 			}
-
-//			die($this->old_menu_item[$menu_id][$menu_item_db_id]); 
-	
-
-
-
 	 }
 	 
 
@@ -115,29 +69,18 @@ class Menus {
                           );
 	 }
 
-	 public function updated_menu($menu_id,$menu_data) {
-	//	 $post_array = filter_input_array( INPUT_POST );
-//		 if($this->old_menu_item
-		// if($this->old_menu[$menu_id]['name']!= $post_array['menu-name'])
-	//		 die("HE");
-		 /*foreach($this->old_post as $menu_obj) {
-		 		if($menu_obj->term_id == $menu_id  && $menu_obj->name  != $post_array['menu-name'])
-					die("FISHYY")	;*/	
-	//	 }
-	//	 $new_menu_items   = array_keys( $post_array['menu-item-title'] );
-  	 //$added_items = array_diff( $new_menu_items, array_keys( $old_menu_items ) );
-//			 die(count($this->old_menu_item));
- 
-
-
-	
-		/* foreach($menu_data as $key=>$value) {
-        echo($key);
-        echo(" => ");
-        echo($value);
-        echo("<br>");
-      }
-      die();*/
+	 public function updated_menu($menu_id,$menu_data =NULL) {	
+		 if(!empty($menu_data)) {
+		 		$new_menu_name = $menu_data['menu-name'];
+		 		if($this->old_menu[$menu_id]['name'] != $new_menu_name)  {
+       		$this->inserter->created( array ( 
+                                         		"From"  =>  $this->old_menu[$menu_id]['name'] ,
+                                       			"To"    =>  $new_menu_name
+                                        ),
+                              		"Menu Updated", NULL
+                          );
+       $this->old_menu = [$menu_id->ID => array( 'name' => $post_array['menu-name'] )];
+			 }
+		 }		
 	 }
-
 }
