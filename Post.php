@@ -32,7 +32,6 @@ class Post {
 		add_action('set_object_terms', array( $this, 'terms_changed' ), 10, 4 );
 		add_action( 'admin_action_edit', array( $this, 'post_edit_detector' ), 10 );
 		add_action( 'wp_head', array( $this, 'view' ), 10 );
-
 	}
 	
 	public function view() {
