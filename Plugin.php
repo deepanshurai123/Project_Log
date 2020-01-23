@@ -4,7 +4,8 @@ class Plugins {
 
 	public $inserter;
 	public $old_plugin=array();	
-  public $old_active_plugin=array();	
+	public $old_active_plugin=array();	
+	public $old_theme=array();
 	
 	public function __construct($inserter) {
  		$this->inserter=$inserter;
@@ -17,8 +18,9 @@ class Plugins {
 	}
 
 	public function admin_mode() {		
-		$this->old_plugin = get_plugins();
+		$this->old_plugin        = get_plugins();
 		$this->old_active_plugin = get_option('active_plugins');
+		$this->old_theme         = wp_get_themes();
 
 	}
 
@@ -66,7 +68,28 @@ class Plugins {
         $plugin_name = str_replace( array( '_', '-', '  ' ), ' ', $plugin_name );
 				$plugin_name = ucwords( $plugin_name );
 				$this->inserter->created(array( 'Name' => $plugin_name ) , "Plugin Deleted", NULL );
-		}			
+		}
+
+		if ( in_array( $action, array( 'install-theme', 'upload-theme' ) ) ) {
+				$themes = array_diff( wp_get_themes(), $this->old_theme );
+				foreach($themes as $key => $theme) {
+					 $this->inserter->created(array( 'Name' => $theme->Name ) , "Theme Installed", NULL );
+				}
+		}
+
+		if ( in_array( $action, array( 'delete-theme' ) ) ) {
+			$themes = array_diff( array_values($this->old_theme),array_values( wp_get_themes()) );
+			
+			/*foreach($themes as $key => $theme) {
+           
+        }*/
+
+
+
+
+
+		}
+					
 	}
 }
 	 
