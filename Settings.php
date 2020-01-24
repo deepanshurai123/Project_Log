@@ -19,7 +19,10 @@ class Settings {
 		$old = get_option( $tag);
     $new = isset( $post_array[$tag] ) ? $post_array[$tag] : '';
 		if( $old !=$new  ) {
-				$this->inserter->created(array( 'Name' => $old, 'val' => $new ) , $tag, NULL );
+			$this->inserter->created(array( 'From' => $old , 
+				                              'To'   => $new 
+																		) , $tag , NULL 
+														);
 		}
 	}
 
@@ -27,27 +30,21 @@ class Settings {
 		$old = get_option( $tag );
 		$new = trim( $post_array[$tag] );
 		if ( $old != $new ) {
-				$this->inserter->created(array( 'Name' => $old, 'val' => $new ) , $tag, NULL );	
+			$this->inserter->created(array( 'From' => $old , 
+				                              'To'  => $new 
+																	) , $tag, NULL );	
 		}
 	}	
 
 	public function admin_mode() {
 		$post_array   = filter_input_array( INPUT_POST );
-    $get_array    = filter_input_array( INPUT_GET );
-		$server_array = filter_input_array( INPUT_SERVER );
 		
-/*		$actype = '';
-    if ( ! empty( $server_array['SCRIPT_NAME'] ) ) {
-      $actype = basename( $server_array['SCRIPT_NAME'], '.php' );
-    }
-
-    $is_option_page      = 'options' === $actype;
-    $is_network_settings = 'settings' === $actype;
-		$is_permalink_page   = 'options-permalink' === $actype;*/
-
 		$option_page_array =array ('siteurl','home' );
-		$settings_trim =array ('default_role','permalink_structure','admin_email');
-			
+		$settings_trim =array ( 'default_role', 'permalink_structure', 'admin_email' );
+	  
+		$this->inserter->setup_tags($settings_trim);
+		$this->inserter->setup_tags($option_page_array);
+		
 		foreach($option_page_array as $option) {
 			if(!empty($post_array[$option] )) {
 				$this->check_for_change($option,$post_array);	

@@ -10,19 +10,23 @@ class Table_Data {
 
 	public function get_entries() {		
 		global $wpdb;
-		$values = $wpdb->get_results("SELECT * FROM wp_Actions1 order by P_id desc");
+		$values = $wpdb->get_results( "SELECT * FROM wp_Actions order by P_id desc" );
 		return $values;
 	}
 
 	public function get_display_message($value,$tag_type,&$admin) {
 		global $wpdb;
-    $values = $wpdb->get_results("SELECT * FROM wp_Data1 where P_id=".$value);
+		
+		$values = $wpdb->get_results( "SELECT * FROM wp_Data where P_id=".$value );
 		$make_up=array();
-    foreach($values as $valued) {
-      $make_up[] =$valued->vVaalue;
+		
+		foreach($values as $valued) {
+      $make_up[] =$valued->Vaalue;
     }
-    $admin = $make_up[0];
+		
+		$admin = $make_up[0];
 		$string;
+		
 		switch($tag_type) {
       case "User Created":
               $string= "<b>".$make_up[1]."</b>"." was created with the role of"."<b>".$make_up[2]."</b>";
@@ -87,37 +91,46 @@ class Table_Data {
 				$string="Added Tags "."<b>".$make_up[2]."</b>"." to the Post Titled "."<b>".$make_up[1]."</b>";
 				break;
 			case "Tags Removed":
-        $string="Deleted Tags "."<b>".$make_up[2]."</b>"." of the Post Titled "."<b>".$make_up[1]."</b>";
+        $string = "Deleted Tags "."<b>".$make_up[2]."</b>"." of the Post Titled "."<b>".$make_up[1]."</b>";
 				break;
 			case "Post Opened":
-				$string="Opened The Post Titled "."<b>".$make_up[1]."</b>";
+				$string = "Opened The Post Titled "."<b>".$make_up[1]."</b>";
 				break;
 		  case "Post Viewed":
-        $string="Viewed The Post Titled "."<b>".$make_up[1]."</b>";
+        $string = "Viewed The Post Titled "."<b>".$make_up[1]."</b>";
 				break;
 			case "Plugin Installed":
-				 $string="Installed the Plugin "."<b>".$make_up[1]."</b>";
+				 $string = "Installed the Plugin "."<b>".$make_up[1]."</b>";
         break;
 		 case "Plugin Activated":
-         $string="Activated the Plugin "."<b>".$make_up[1]."</b>";
+         $string = "Activated the Plugin "."<b>".$make_up[1]."</b>";
         break;
  		 case "Plugin Deactivated":
-         $string="Deactivated the Plugin "."<b>".$make_up[1]."</b>";
+         $string = "Deactivated the Plugin "."<b>".$make_up[1]."</b>";
         break;
 		 case "Plugin Deleted":
-         $string="Deleted the Plugin "."<b>".$make_up[1]."</b>";
+         $string = "Deleted the Plugin "."<b>".$make_up[1]."</b>";
 				 break;
 		 case "Menu Created":
-				$string="Created a Menu "."<b>".$make_up[1]."</b>";
+				$string = "Created a Menu "."<b>".$make_up[1]."</b>";
 				break;
 		 case "Menu Item Added":
-				$string=" Added a item "."<b>".$make_up[2]."</b>"." of type "."<b>".$make_up[1]."</b>"." to the menu "."<b>".$make_up[3]."</b>" ;
+				$string = " Added a item "."<b>".$make_up[2]."</b>"." of type "."<b>".$make_up[1]."</b>"." to the menu "."<b>".$make_up[3]."</b>" ;
 				break;
 		case "Menu Updated":
-			$string=" Updated a Menu Name from "."<b>".$make_up[1]."</b>"." to "."<b>".$make_up[2]."</b>";
+			$string = " Updated a Menu Name from "."<b>".$make_up[1]."</b>"." to "."<b>".$make_up[2]."</b>";
 			break;
-		
-
+		case "siteurl":
+		 $string = " Updated siteurl from "."<b>".$make_up[1]."</b>"." to "."<b>".$make_up[2]."</b>";
+      break;
+		case "home":
+     $string = " Updated Home Link from "."<b>".$make_up[1]."</b>"." to "."<b>".$make_up[2]."</b>";
+		 break;
+		case "default_role":
+		case "permalink_structure":
+		case "admin_email":
+			$string =  $this->inserter->tag_map[$tag_type]." From "."<b>".$make_up[1]."</b>"." to "."<b>".$make_up[2];
+				break;
 
     }
     return $string;

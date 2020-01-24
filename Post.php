@@ -38,19 +38,16 @@ class Post {
 		$post = get_queried_object();
 		$post_data = get_post($post_id);
     $this->inserter->created(array(
-                                    "post_title",
-                                    "post_status",
+                                    "post_title" ,
+                                    "post_status" ,
                                     "post_author"
                                 ),
                                 "Post Viewed",
                                 $post_data
                           );
-
 	}
 
-
 	public function post_edit_detector() {
-
 		$post_id = isset( $_GET['post'] ) ? (int) sanitize_text_field( wp_unslash( $_GET['post'] ) ) : false;
 		$post_data = get_post($post_id);
 		$this->inserter->created(array(
@@ -61,60 +58,6 @@ class Post {
                                 "Post Opened",
                                 $post_data
                             );	
-	}
-
-	public function terms_changed( $post_id, $terms, $tt_ids, $taxonomy ) {
-	
-		$post = get_post( $post_id );	
-		if('auto-draft'== $post->post_status)
-			return;
-		if ('post_tag' == $taxonomy ) {
-			$this->check_tags_change( $this->get_post_tags( $post ), $post );
-		} else {
-      $this->check_categories_change( $this->old_cats, $this->get_post_categories( $post ), $post );
-    }
-	}
-
-	public function check_categories_change($old_cats,$new_cats,$post) {
-		$old_cats = implode( ', ', (array) $old_cats );
-		$new_cats = implode( ', ', (array) $new_cats );
-		$old_cats = empty($old_cats) ? "NO CATEGORY" : $old_cats; 
-		$new_cats = empty($new_cats) ? "NO CATEGORY" : $new_cats;
-		if($old_cats != $new_cats) {
-			    $this->inserter->created( array(
-                                     "post_title"      =>  $post->post_title ,
-																		 "Old_Categories"  =>  $old_cats , 
-																		 "New_Categories"  =>  $new_cats
-																	 ),
-                            "Category Changed",
-                            NULL);	
-		}
-	}	
-
-	public function check_tags_change($new_tag,$post) {
-		$added_tags = array_diff(  $new_tag,  $this->old_tags );
-		$removed_tags = array_diff(  $this->old_tags,  $new_tag );
-		
-    $old_tags     = implode( ', ', (array) $this->old_tags );
-    $new_tags     = implode( ', ', (array) $new_tags );
-    $added_tags   = implode( ', ', $added_tags );
-		$removed_tags = implode( ', ', $removed_tags );
-
-		if($this->old_tags!=$new_tags && !empty($added_tags)) {
-			$this->inserter->created( array(
-                                     "post_title" =>  $post->post_title,
-                                     "Tags"       =>  $added_tags ),
-                            "Tags Added",
-														NULL);
-		}
-
-		if($this->old_tags!=$new_tags && !empty($removed_tags)) {
-			 $this->inserter->created( array(
-                                     "post_title" => $post->post_title,
-                                     "Tags"       => $removed_tags ),
-                            "Tags Removed",
-                           NULL);
-		}
 	}
 
 	public function trashed_post($post_id) {
@@ -198,14 +141,68 @@ class Post {
 	}
 
 	public function get_post_tags($post) {
-		return ! isset( $post->ID ) ? array() : wp_get_post_tags( $post->ID, array( 
-																																									'fields' => 'names' 
-																																						) 
-																																					);
+		return ! isset( $post->ID ) ? array() : wp_get_post_tags( $post->ID, array( 'fields' => 'names' ) );
 	}
 
 	public function get_post_categories( $post ) {
     return ! isset( $post->ID ) ? array() : wp_get_post_categories( $post->ID, array( 'fields' => 'names' ) );
-  }
+	}
+
+	public function check_tags_change($new_tag,$post) {
+		$added_tags = array_diff(  $new_tag,  $this->old_tags );
+    $removed_tags = array_diff(  $this->old_tags,  $new_tag );
+
+    $old_tags     = implode( ', ', (array) $this->old_tags );
+    $new_tags     = implode( ', ', (array) $new_tags );
+    $added_tags   = implode( ', ', $added_tags );
+    $removed_tags = implode( ', ', $removed_tags );
+
+    if($this->old_tags!=$new_tags && !empty($added_tags)) {
+      $this->inserter->created( array(
+                                     "post_title" =>  $post->post_title,
+                                     "Tags"       =>  $added_tags ),
+                            "Tags Added",
+                            NULL);
+    }
+
+    if($this->old_tags!=$new_tags && !empty($removed_tags)) {
+       $this->inserter->created( array(
+                                     "post_title" => $post->post_title,
+                                     "Tags"       => $removed_tags ),
+                            "Tags Removed",
+                           NULL);
+    }
+	}
+
+	 public function check_categories_change($old_cats,$new_cats,$post) {
+    $old_cats = implode( ', ', (array) $old_cats );
+    $new_cats = implode( ', ', (array) $new_cats );
+    $old_cats = empty($old_cats) ? "NO CATEGORY" : $old_cats;
+    $new_cats = empty($new_cats) ? "NO CATEGORY" : $new_cats;
+    if($old_cats != $new_cats) {
+          $this->inserter->created( array(
+                                     "post_title"      =>  $post->post_title ,
+                                     "Old_Categories"  =>  $old_cats ,
+                                     "New_Categories"  =>  $new_cats
+                                   ),
+                            "Category Changed",
+                            NULL);
+    }
+	 }
+
+	 public function terms_changed( $post_id, $terms, $tt_ids, $taxonomy ) {
+
+    $post = get_post( $post_id );
+    if('auto-draft'== $post->post_status)
+      return;
+    if ('post_tag' == $taxonomy ) {
+      $this->check_tags_change( $this->get_post_tags( $post ), $post );
+    } else {
+      $this->check_categories_change( $this->old_cats, $this->get_post_categories( $post ), $post );
+    }
+	 }
+
+
+
 		
 }

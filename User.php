@@ -44,19 +44,14 @@ class User {
 
 	public function user_deleted($user_id) {
 		$user_data= get_userdata($user_id);
-		$this->inserter->created(array(
-																		"user_login"
-                                ),
-                            "User Deleted",
-                            $user_data
-                          );
+		$this->inserter->created( array(	"user_login") , "User Deleted" , $user_data );
 	}		
 
 	public function user_created($user_id) {
 		$user_data= get_userdata($user_id);
 		$this->inserter->created(array(
-																	 "user_login",
-																	 "roles"
+																	  "user_login",
+																	  "roles"
 																 ),
 														"User Created",
 														$user_data

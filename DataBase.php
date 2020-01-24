@@ -31,18 +31,21 @@ class Database {
 
 	public function setup() {
 		
-		$this->create_table("Actions1", array("P_id mediumint(9) NOT NULL AUTO_INCREMENT",
-                                              	     "Time datetime",
-                                                     "Tag varchar(55)",
-               	                                     "PRIMARY KEY  (P_id)"));
+		$this->create_table("Actions", array( "P_id mediumint(9) NOT NULL AUTO_INCREMENT" ,
+															 						"Time datetime" ,
+																					"Tag varchar(55)" ,
+																					"PRIMARY KEY  (P_id)"
+																			)
+																		);
 		
-		$this->create_table("Data1",array("iddd mediumint(9) NOT NULL AUTO_INCREMENT",
-                                                  "kkaey varchar(59)",
-                                                  "vVaalue varchar(55)",
-                                                  "P_id mediumint(9)",
-                                                  "PRIMARY KEY  (iddd)",
-                                                  "FOREIGN KEY  (P_id) REFERENCES wp_Actions1 (P_id)"
-                                           ));
+		$this->create_table("Data",array( "id mediumint(9) NOT NULL AUTO_INCREMENT" ,
+																			"Keey varchar(59)" ,
+																			"Vaalue varchar(55)" ,
+																			"P_id mediumint(9)" ,
+																			"PRIMARY KEY  (id)" ,
+																			"FOREIGN KEY  (P_id) REFERENCES wp_Actions (P_id)"	
+																	)
+																);
 	}
 
 	/*
@@ -72,10 +75,10 @@ class Database {
 	public function insert_tag_meta($array_values, $last_id) {
 		global $wpdb;
 		foreach($array_values as $key => $value) {
-			$wpdb->insert('wp_Data1',array( 'iddd' => '' , 
-																    	'kkaey' => $key , 
-																			'vVaalue' => $value, 
-																			'P_id' => $last_id
+			$wpdb->insert('wp_Data',array(  'id'     =>  '' , 
+																    	'Keey'   =>  $key , 
+																			'Vaalue' =>  $value , 
+																			'P_id'   =>  $last_id
 																		)
 									);																	
 		}
@@ -83,7 +86,11 @@ class Database {
 
 	public function insert_tag($tag_type) {	
 		global $wpdb;
-		$wpdb->insert('wp_Actions1',array('P_id' => '','Time' => date('Y-m-d H:i:s'), 'Tag' => $tag_type ));
+		$wpdb->insert('wp_Actions',array( 'P_id' =>  '' ,
+																			'Time' =>  date('Y-m-d H:i:s') , 
+																			'Tag'  =>  $tag_type 
+																	)
+																);
 		$lastid = $wpdb->insert_id;
 		return $lastid;
 	}

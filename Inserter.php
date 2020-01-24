@@ -23,11 +23,7 @@ class Inserter {
 		$details_array = !(is_null($decider)) ? $this->make_array($details_array, $decider) : $details_array;
 		$last_user_id = $this->set_initials($tag_type);
 		foreach($details_array as $key => $value) {
-			$this->db->insert_tag_meta(array(
-																				$key => $value
-																		), 
-																$last_user_id
-														);
+			$this->db->insert_tag_meta( array (	$key => $value ), $last_user_id );
 		}
 	}
 	
