@@ -94,7 +94,30 @@ class Table_Data {
 				break;
 		  case "Post Viewed":
         $string="Viewed The Post Titled "."<b>".$make_up[1]."</b>";
+				break;
+			case "Plugin Installed":
+				 $string="Installed the Plugin "."<b>".$make_up[1]."</b>";
         break;
+		 case "Plugin Activated":
+         $string="Activated the Plugin "."<b>".$make_up[1]."</b>";
+        break;
+ 		 case "Plugin Deactivated":
+         $string="Deactivated the Plugin "."<b>".$make_up[1]."</b>";
+        break;
+		 case "Plugin Deleted":
+         $string="Deleted the Plugin "."<b>".$make_up[1]."</b>";
+				 break;
+		 case "Menu Created":
+				$string="Created a Menu "."<b>".$make_up[1]."</b>";
+				break;
+		 case "Menu Item Added":
+				$string=" Added a item "."<b>".$make_up[2]."</b>"." of type "."<b>".$make_up[1]."</b>"." to the menu "."<b>".$make_up[3]."</b>" ;
+				break;
+		case "Menu Updated":
+			$string=" Updated a Menu Name from "."<b>".$make_up[1]."</b>"." to "."<b>".$make_up[2]."</b>";
+			break;
+		
+
 
     }
     return $string;

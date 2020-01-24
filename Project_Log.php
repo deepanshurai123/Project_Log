@@ -18,6 +18,7 @@ require_once('Table_Data.php');
 require_once('View.php');
 require_once('Menu.php');
 require_once('Plugin.php');
+require_once('Settings.php');
 $db = new DataBase;
 $inserter = new Inserter($db);
 $user = new User($inserter);
@@ -28,5 +29,6 @@ $menus = new Menus($inserter);
 $Tabledata = new Table_Data($inserter);
 $view = new View($Tabledata, $inserter);
 $plugin = new Plugins($inserter);
+$settings = new Settings($inserter);
 add_action('admin_menu',array($view, admin_menu_setup));
  
