@@ -1,75 +1,46 @@
 <?php
 
-/*This class contains
- * all the actions Performed
- * against Users
- */
+require_once('Data_Utill.php');
 
-class User {
-
-
-	/*
-	 * This will manage the
-	 * database object
-	 */
+class User extends Data_Utill  
+{
 	
 	public $db;
-	public $inserter;
+	public $logger;
+	public $user_properties = array( "user_pass", "user_email", "user_firstname", "user_lastname", "display_name", "roles", "password" );
 
-	function __construct( $inserter) {
-		$this->inserter=$inserter;
-		$this->activate_user_hooks();
-		$this->set_up_tags();
+	function __construct( $logger ) {
+		$this->logger = $logger;
+		$this->property_to_event( $this->user_properties );
 	}
-
-	/*
-	 * This Function will activate 
-	 * all the Hooks Required For
-	 * the User 
-	 */
-
+	
+	public static function init( $logger ) {
+		$user = new User( $logger );
+		$user->activate_user_hooks();
+	}
+	
 	public function activate_user_hooks() {
-
-		/*1.User Created -*/ add_action('user_register', array($this, 'user_created'));
-		/*2.User Meta Details -*/  add_action('profile_update', array($this, 'user_modified'), 10, 2);
-															add_action('delete_user',array($this , 'user_deleted'));
+	 	add_action( 'user_register', array( $this, 'user_created' ) );
+		add_action( 'profile_update', array( $this, 'user_modified' ), 10, 2 );   
+		add_action( 'delete_user', array( $this , 'user_deleted' ) );
 	}
-
-	/*
-	 * This Function will
-	 * manage the New 
-	 * Users that
-	 * are being Created
-	 */
 
 	public function user_deleted($user_id) {
 		$user_data= get_userdata($user_id);
-		$this->inserter->created( array(	"user_login") , "User Deleted" , $user_data );
+		$this->logger->log( array( "user_login" => $user_data->user_login ), "User Deleted" );
 	}		
 
-	public function user_created($user_id) {
-		$user_data= get_userdata($user_id);
-		$this->inserter->created(array(
-																	  "user_login",
-																	  "roles"
-																 ),
-														"User Created",
-														$user_data
-													);
+	public function user_created( $user_id ) {
+		$user_data = get_userdata( $user_id );
+		$new_user_details = $this->get_data( array( "user_login", "roles" ), $user_data );
+		$this->logger->log( $new_user_details, "User Created" );
 	}
 
-	public function user_modified_array() {
-		$keys= array("user_pass","user_email","user_firstname","user_lastname","display_name","roles");
-		return $keys;
-	}
-
-	public function set_up_tags() {
-		$key = $this->user_modified_array();
-		$this->inserter->setup_tags($key);
-	}
-
-	public function user_modified($user_id, $user_old_data) {
-		$key = $this->user_modified_array();
-		$this->inserter->modification_check($user_old_data, get_userdata($user_id), $key, "User", $user_old_data->user_login);
+	public function user_modified( $user_id, $user_old_data ) {
+		$new_user_data = get_userdata( $user_id ); 
+		$modified_details = $this->check_modified_values( $user_old_data, $new_user_data, $this->user_properties, "User", $user_old_data->user_login );
+		foreach($modified_details as $modified_tag => $modified_detail ) {
+			 $this->logger->log( $modified_detail, $modified_tag);
+		}
 	}
 }
